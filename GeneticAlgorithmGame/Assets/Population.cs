@@ -27,9 +27,9 @@ public class Population : MonoBehaviour
 	}
      
     
-    void Breed(Agent agentA , Agent  agentB , int gen)
+    void Breed(ref Agent agentA , ref Agent agentB , int gen)
     {
-        CheckGen( untestedPools , gen);
+        CheckGen( untestedPools , gen + 1);
         ////
  
         SwapDNA(agentA, agentB, 0);
@@ -170,6 +170,8 @@ public class Population : MonoBehaviour
         
         float avg = total / count;
 
+        Debug.Log("avg test " + avg);
+
         if(avg > 60)
         {
             kill = false;
@@ -183,7 +185,6 @@ public class Population : MonoBehaviour
         agent = null;
         return kill;
     }
-
     public void ReturnTestedAgent(Agent agent , int gen)
     {
         ArrayList testedGen;
@@ -205,6 +206,37 @@ public class Population : MonoBehaviour
             Debug.Log("Population::ReturnTestedAgent gen too high");
         }
       }
+
+
+    /// <summary>
+    /// loop through test gen and breed them
+    /// 
+    /// 
+    /// /// </summary>
+    public void BreedAllTestedGen()
+    {
+        int numOfTestedGen = testedPools.Count;
+
+        for (int genIndex = 0; genIndex < numOfTestedGen; genIndex++)
+        {
+            ArrayList testedGen = (ArrayList)testedPools[genIndex];
+
+            while (testedGen.Count > 1)
+            {
+                Agent A = (Agent)testedGen[0];
+                Agent B = (Agent)testedGen[1];
+
+                testedGen.Remove(A);
+                testedGen.Remove(B);
+
+                Breed(ref  A, ref  B, genIndex);
+                
+            }// end while ran out of tested agents
+
+
+        }// end loop of all tested gens
+
+    }
 }
 
 

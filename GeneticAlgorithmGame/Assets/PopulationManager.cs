@@ -21,6 +21,12 @@ public class PopulationManager : MonoBehaviour
             GetAgent();
         }
 
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            testPop.BreedAllTestedGen();
+        }
+
+
     }
 
     void GetAgent()
