@@ -68,10 +68,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Agent.cs" />
-    <Compile Include="Assets\AgentComponent.cs" />
-    <Compile Include="Assets\Population.cs" />
-    <Compile Include="Assets\PopulationManager.cs" />
+    <Compile Include="Assets\Scripts\Agent.cs" />
+    <Compile Include="Assets\Scripts\AgentComponent.cs" />
+    <Compile Include="Assets\Scripts\Population.cs" />
+    <Compile Include="Assets\Scripts\PopulationManager.cs" />
+    <Compile Include="Assets\Scripts\UIDisplay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

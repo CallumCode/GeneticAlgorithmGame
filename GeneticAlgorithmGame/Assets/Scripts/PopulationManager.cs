@@ -16,7 +16,7 @@ public class PopulationManager : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKey(KeyCode.Keypad1))
         {
             GetAgent();
         }

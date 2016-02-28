@@ -52,4 +52,9 @@ public class Agent
         }
     }
 
+    public void IncrimentGen()
+    {
+        generation++;
+    }
+
 }

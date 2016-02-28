@@ -11,7 +11,7 @@ public class Population : MonoBehaviour
     public int randomStartSize = 10;
     public int randomRefilSize = 10;
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         untestedPools = new ArrayList();
         testedPools = new ArrayList();
@@ -21,25 +21,31 @@ public class Population : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-	
-	}
-     
-    
-    void Breed(ref Agent agentA , ref Agent agentB , int gen)
+
+    }
+
+
+    void Breed(ref Agent agentA, ref Agent agentB, int gen)
     {
-        CheckGen( untestedPools , gen + 1);
+        CheckGen(untestedPools, gen + 1);
+        CheckGen(testedPools, gen + 1);
+
         ////
- 
+
         SwapDNA(agentA, agentB, 0);
         ////
-        ArrayList untestGenPool = ( ArrayList ) untestedPools[gen + 1 ];
+        ArrayList untestGenPool = (ArrayList)untestedPools[gen + 1];
+
+
+        agentA.IncrimentGen();
+        agentB.IncrimentGen();
 
         untestGenPool.Add(agentA);
         untestGenPool.Add(agentB);
     }
-    void CheckGen(ArrayList genPools , int gen)
+    void CheckGen(ArrayList genPools, int gen)
     {
         if (untestedPools.Count == gen)
         {
@@ -47,13 +53,13 @@ public class Population : MonoBehaviour
             genPools.Add(newGeneration);
         }
 
-        if (untestedPools.Count < gen )
+        if (untestedPools.Count < gen)
         {
             Debug.Log("pool too smal");
             Debug.Break();
         }
-    
-}
+
+    }
     void SwapBreed(Agent agentA, Agent agentB)
     {
         // TODO decide how many to swap
@@ -61,9 +67,9 @@ public class Population : MonoBehaviour
         int randIndex = Random.Range(0, Agent.numOfComponets);
         SwapDNA(agentA, agentB, randIndex);
     }
-    void SwapDNA( Agent agentA, Agent agentB, int index)
+    void SwapDNA(Agent agentA, Agent agentB, int index)
     {
-        AgentComponent cachA = (AgentComponent) agentA.componentsList[index];
+        AgentComponent cachA = (AgentComponent)agentA.componentsList[index];
 
         agentA.componentsList[index] = agentB.componentsList[index];
 
@@ -73,14 +79,16 @@ public class Population : MonoBehaviour
     void CreateRandomFirstPool(int howMany)
     {
         CheckGen(untestedPools, 0);
+        CheckGen(testedPools, 0);
+
         ArrayList firstGen = (ArrayList)untestedPools[0];
-        for(int i = 0; i < howMany; i ++)
+        for (int i = 0; i < howMany; i++)
         {
-            Agent agent = new Agent(this , 0);
+            Agent agent = new Agent(this, 0);
             firstGen.Add(agent);
         }
     }
-      /// <summary>
+    /// <summary>
     /// loops through each untested gen pool looking for latest one that isn ot empty
     /// </summary>
     /// <returns>non emmpty latest untested gen pool</returns>
@@ -109,15 +117,15 @@ public class Population : MonoBehaviour
             Debug.Log("NO UNTested Gens");
             Debug.Break();
         }
-        
+
 
         if (gen == null)
         {
             CreateRandomFirstPool(randomRefilSize);
             gen = (ArrayList)untestedPools[0];
-        }         
+        }
 
-         return gen;
+        return gen;
     }
     /// <summary>
     ///    removes agent from gen and returns it
@@ -130,7 +138,7 @@ public class Population : MonoBehaviour
 
         int count = gen.Count;
 
-        if(count > 0)
+        if (count > 0)
         {
             agent = (Agent)gen[count - 1];
             gen.RemoveAt(count - 1);
@@ -149,7 +157,7 @@ public class Population : MonoBehaviour
 
         ArrayList untestGenLatest = GetNewestUnTestedGen();
 
-        Agent agent =  GetAgent(untestGenLatest);
+        Agent agent = GetAgent(untestGenLatest);
 
         return agent;
     }
@@ -161,23 +169,23 @@ public class Population : MonoBehaviour
 
         float total = 0;
         int count = agent.componentsList.Count;
-        for(int index = 0; index < count; index++)
+        for (int index = 0; index < count; index++)
         {
             AgentComponent agentComponent = (AgentComponent)agent.componentsList[0];
 
             total += agentComponent.ID;
         }
-        
+
         float avg = total / count;
 
         Debug.Log("avg test " + avg);
 
-        if(avg > 60)
+        if (avg > 60)
         {
             kill = false;
             agent.SurivedGen();
         }
-            else
+        else
         {
             agent.KillSelf();
         }
@@ -185,27 +193,28 @@ public class Population : MonoBehaviour
         agent = null;
         return kill;
     }
-    public void ReturnTestedAgent(Agent agent , int gen)
+    public void ReturnTestedAgent(Agent agent, int gen)
     {
         ArrayList testedGen;
 
-        if (testedPools.Count > gen  )
+        CheckGen(testedPools, gen);
+
+        if (testedPools.Count > gen)
         {
             testedGen = (ArrayList)testedPools[gen];
             testedGen.Add(agent);
         }
-        else if(gen == testedPools.Count)
+        else if (gen == testedPools.Count)
         {
-            testedPools.Add( new ArrayList() );
+            testedPools.Add(new ArrayList());
             testedGen = (ArrayList)testedPools[gen];
             testedGen.Add(agent);
         }
         else
         {
-            
             Debug.Log("Population::ReturnTestedAgent gen too high");
         }
-      }
+    }
 
 
     /// <summary>
@@ -229,14 +238,60 @@ public class Population : MonoBehaviour
                 testedGen.Remove(A);
                 testedGen.Remove(B);
 
-                Breed(ref  A, ref  B, genIndex);
-                
+                Breed(ref A, ref B, genIndex);
+
             }// end while ran out of tested agents
 
 
         }// end loop of all tested gens
 
     }
+
+
+    public int GetNumOfGens()
+    {
+        int num = untestedPools.Count;
+        /*
+        if (num != testedPools.Count)
+        {
+            Debug.Log("test and untested counts not match");            
+            Debug.Break();
+        }*/
+
+        return num;
+    }
+
+    public int GetTestedCount(int gen)
+    {
+        int count = 0;
+        if (testedPools != null && gen < testedPools.Count)
+        {
+
+            ArrayList testedGenN = (ArrayList)testedPools[gen];
+
+            if (testedGenN != null)
+            {
+                count = testedGenN.Count;
+            }
+        }
+        return count;
+    }
+
+    public int GetUnTestedCount(int gen)
+    {
+        int count = -1;
+        if (untestedPools != null && gen < untestedPools.Count)
+        {
+
+            ArrayList unTestedGenN = (ArrayList)untestedPools[gen];
+
+            if (unTestedGenN != null )
+            {
+                count = unTestedGenN.Count;
+            }
+            
+        }
+        return count;
+    }
+
 }
-
-

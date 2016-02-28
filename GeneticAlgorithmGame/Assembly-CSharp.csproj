@@ -46,10 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Agent.cs" />
-     <Compile Include="Assets\AgentComponent.cs" />
-     <Compile Include="Assets\Population.cs" />
-     <Compile Include="Assets\PopulationManager.cs" />
+     <Compile Include="Assets\Scripts\Agent.cs" />
+     <Compile Include="Assets\Scripts\AgentComponent.cs" />
+     <Compile Include="Assets\Scripts\Population.cs" />
+     <Compile Include="Assets\Scripts\PopulationManager.cs" />
+     <Compile Include="Assets\Scripts\UIDisplay.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
