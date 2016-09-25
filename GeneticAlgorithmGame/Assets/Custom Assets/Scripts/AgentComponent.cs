@@ -8,10 +8,11 @@ public class AgentComponent
 
 	public int ID;
 
+	static int range = 20;
 	// Use this for initialization
 	public AgentComponent()
 	{
-		ID = Random.Range(0, 100);
+		ID = Random.Range(-range, range);
 	}
 
 

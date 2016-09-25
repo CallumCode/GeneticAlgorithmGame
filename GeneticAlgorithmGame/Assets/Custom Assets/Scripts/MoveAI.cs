@@ -2,7 +2,7 @@
 
 public class MoveAI : MonoBehaviour
 {
-	public float speed = 5;
+	public float speed = 20;
 
 	CharacterController characterController;
 
@@ -10,13 +10,20 @@ public class MoveAI : MonoBehaviour
 
 
 	float lastUpdate = 0;
-	float updateRate = 0.1f;
+	public static float updateRate = 0.5f;
 	int index = 0;
+
+
+	public Vector3 startPos;
+	public Vector3 starDir;
+
 	// Use this for initialization
 	void Start()
 	{
 		characterController = GetComponent<CharacterController>();
-	}
+		startPos = transform.position;
+		starDir = transform.forward;
+ 	}
 
 	// Update is called once per frame
 	void Update()
@@ -77,15 +84,31 @@ public class MoveAI : MonoBehaviour
 
 	public void KillSelf()
 	{
-		agent.KillSelf();
-		Destroy(gameObject);
+		AIManager.Instance.AgentFinishedTesting(agent.GetGenNumber());
+		if (AIManager.Instance.UpdateAgentAvgDist(transform.position) > AIManager.Instance.GetAvgDist())
+		{
+			agent.KillSelf();
+			Destroy(gameObject);
+		}
+		else
+		{
+			agent.SurivedGen();
+			Destroy(gameObject);
+		}
+		
 	}
 
 	public void Win()
 	{
+		AIManager.Instance.AgentFinishedTesting(agent.GetGenNumber());
+		AIManager.Instance.UpdateAgentAvgDist(transform.position);
+
 		agent.SurivedGen();
 		Destroy(gameObject);
 	}
 
-
+	public Agent GetAgent()
+	{
+		return agent;
+	}
 }

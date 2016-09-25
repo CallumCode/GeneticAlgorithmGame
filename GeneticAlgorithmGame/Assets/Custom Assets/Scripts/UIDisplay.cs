@@ -5,13 +5,19 @@ using UnityEngine.UI;
 public class UIDisplay : MonoBehaviour
 {
 
+	public Text agentsInTesting;
 	Text numOFGensText;
 	public Population popToshow;
 	public GameObject mainCanvasObeject;
 	public GameObject TextPrefab;
 
+	public Slider limitSlider;
+	public Text limitText;
+	public Text avgDistText;
+
 	ArrayList listOfGensCounts;
 
+	ArrayList listOfGenCountsInTesting;
 
 	public Text AddTextToCanvas(string textString, GameObject canvasGameObject, float depth)
 	{
@@ -39,6 +45,7 @@ public class UIDisplay : MonoBehaviour
 	void Start()
 	{
 		listOfGensCounts = new ArrayList();
+		listOfGenCountsInTesting = new ArrayList();
 
 		numOFGensText = AddTextToCanvas("numOFGensText", mainCanvasObeject, 0);
 	}
@@ -62,12 +69,15 @@ public class UIDisplay : MonoBehaviour
 		int numOfgens = listOfGensCounts.Count;
 		for (int i = 0; i < numOfgens; i++)
 		{
+
+			int agentsInTesting = 0;
+			if (listOfGenCountsInTesting.Count > i) agentsInTesting = (int) listOfGenCountsInTesting[i];
+
 			Text genCountText = (Text)listOfGensCounts[i];
-			genCountText.text = "Gen " + i + " : Untested : " + popToshow.GetUnTestedCount(i) + " Tested : " + popToshow.GetTestedCount(i);
+			genCountText.text = "Gen " + i + " : Untested : " + popToshow.GetUnTestedCount(i) + " Tested : " + popToshow.GetTestedCount(i) + " Testing " + agentsInTesting;
 			Text shadow = genCountText.transform.GetChild(0).GetComponent<Text>();
 			shadow.text = genCountText.text;
 		}
-
 	}
 
 	void CreateNewGenTexts()
@@ -81,6 +91,44 @@ public class UIDisplay : MonoBehaviour
 		}
 	}
 
+
+
+	public void UpdateAgentsInTesting(int number , int gen , int total)
+	{
+		agentsInTesting.text = "Total Agents In Testing: " + total;
+		
+		bool added = false;
+		while (!added)
+		{
+			if (listOfGenCountsInTesting.Count > gen)
+			{
+				int lastCount = (int)listOfGenCountsInTesting[gen];
+				lastCount += number;
+				listOfGenCountsInTesting[gen] = lastCount;
+				added = true;
+			}
+			else
+			{
+				Debug.Log("Testing New Gen " + gen);
+				listOfGenCountsInTesting.Add(0);
+			}
+		}
+		
+		UpdateGenDisplay();
+	}
+
+
+	public void ChangeLimitSlider()
+	{
+		int limit = ((int)limitSlider.value);
+		AIManager.Instance.ChangeAgentTestingLimit(limit);
+		limitText.text = "Limit " + limit;
+	}
+
+	public void UpdateAverageDistance(float distance)
+	{
+		avgDistText.text =  "Avg distance: " + distance;
+	}
 }
 
 

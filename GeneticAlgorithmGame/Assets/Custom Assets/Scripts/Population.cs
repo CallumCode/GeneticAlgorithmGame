@@ -62,11 +62,15 @@ public class Population : MonoBehaviour
 	}
 	void SwapBreed(Agent agentA, Agent agentB)
 	{
-		// TODO decide how many to swap
 
-		int randIndex = UnityEngine.Random.Range(0, Agent.numOfComponets);
-		SwapDNA(agentA, agentB, randIndex);
+		int numToSwap = (int) ( Agent.numOfComponets * 0.25f);
+		for(int i = 0; i < numToSwap; i++)
+		{
+			int randIndex = UnityEngine.Random.Range(0, Agent.numOfComponets);
+			SwapDNA(agentA, agentB, randIndex);
+		}
 	}
+
 	void SwapDNA(Agent agentA, Agent agentB, int index)
 	{
 		AgentComponent cachA = (AgentComponent)agentA.componentsList[index];

@@ -6,7 +6,7 @@ public class Agent
 {
 
 	public ArrayList componentsList;
-	public static int numOfComponets = 100;
+	public static int numOfComponets = 30;
 
 	int generation;
 	Population population;
@@ -22,7 +22,7 @@ public class Agent
 
 public Agent(Population populationIn, int generationIn)
 	{
-		Debug.Log("Agent created " + Time.time);
+	//	Debug.Log("Agent created " + Time.time);
 		componentsList = new ArrayList();
 		generation = generationIn;
 		population = populationIn;
