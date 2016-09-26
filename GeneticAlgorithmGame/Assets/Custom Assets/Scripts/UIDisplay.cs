@@ -73,10 +73,17 @@ public class UIDisplay : MonoBehaviour
 			int agentsInTesting = 0;
 			if (listOfGenCountsInTesting.Count > i) agentsInTesting = (int) listOfGenCountsInTesting[i];
 
-			Text genCountText = (Text)listOfGensCounts[i];
-			genCountText.text = "Gen " + i + " : Untested : " + popToshow.GetUnTestedCount(i) + " Tested : " + popToshow.GetTestedCount(i) + " Testing " + agentsInTesting;
-			Text shadow = genCountText.transform.GetChild(0).GetComponent<Text>();
-			shadow.text = genCountText.text;
+			if(agentsInTesting < 0)
+			{
+				Debug.Break();
+			}
+			else
+			{
+				Text genCountText = (Text)listOfGensCounts[i];
+				genCountText.text = "Gen " + i + " : Untested : " + popToshow.GetUnTestedCount(i) + " Tested : " + popToshow.GetTestedCount(i) + " Testing " + agentsInTesting;
+				Text shadow = genCountText.transform.GetChild(0).GetComponent<Text>();
+				shadow.text = genCountText.text;
+			}
 		}
 	}
 
@@ -104,6 +111,13 @@ public class UIDisplay : MonoBehaviour
 			{
 				int lastCount = (int)listOfGenCountsInTesting[gen];
 				lastCount += number;
+
+				if(lastCount < 0)
+				{
+					Debug.Break();
+					lastCount = 0;
+				}
+
 				listOfGenCountsInTesting[gen] = lastCount;
 				added = true;
 			}

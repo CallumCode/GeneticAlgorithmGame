@@ -19,13 +19,25 @@ public class WinLine : MonoBehaviour
 	void OnTriggerEnter(Collider other)
 	{
 
-		MoveAI moveAI = other.gameObject.GetComponent<MoveAI>();
-
-		if (moveAI != null)
+		if (other.CompareTag("MoveAI"))
 		{
-			moveAI.Win();
+			MoveAI moveAI = other.gameObject.GetComponent<MoveAI>();
+
+			if (moveAI != null)
+			{
+				moveAI.Win();
+			}
+
 		}
 
-	}
 
+		if (other.CompareTag("WalkAI"))
+		{
+			WalkAI walkAI = other.gameObject.GetComponentInParent<WalkAI>();
+			if(walkAI != null)
+			{
+				walkAI.Succeed();
+			}
+		}
+	}
 }

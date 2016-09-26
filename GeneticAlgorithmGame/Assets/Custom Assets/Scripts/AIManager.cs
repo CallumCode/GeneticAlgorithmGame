@@ -12,19 +12,22 @@ public class AIManager : Singleton<AIManager>
 	public Transform WinLine;
 	public GameObject MoveAIPrefab;
 
+	public GameObject WalkAIPrefab;
+
+
 	public PopulationManager populationManager;
 
-	float spawnRate = 25.0f;
+	float spawnRate = 5.0f;
 	float lastSpawnTime = 0;
 
 	float breedRate = 0.05f;
 	float lastBreedTime = 0;
 
 
-	int agentsInTesting = 0;
-	int agentLimit = 200;
+	 int agentsInTesting = 0;
+	int agentLimit = 1;
 
-	float averageDistance = 0;
+	float averageDistance = 100000;
 	float totalAgents = 0;
 
 	protected AIManager() { }
@@ -47,7 +50,7 @@ public class AIManager : Singleton<AIManager>
 		}
 
 		bool pastTime = Time.time > (lastSpawnTime + 1.0f / spawnRate);
-		bool lowerThanLimit = agentsInTesting < agentLimit;
+		bool lowerThanLimit = agentsInTesting < Mathf.Abs(agentLimit);
 		if (pastTime && lowerThanLimit)
 		{
 			lastSpawnTime = Time.time;
@@ -56,18 +59,35 @@ public class AIManager : Singleton<AIManager>
 
 			Random.seed = Random.Range(0, 999999);
 
-			float randomOoffset = Random.Range( -0.5f * spawnLine.transform.localScale.x , 0.5f * spawnLine.transform.localScale.x );
+			//SpawnMoveAI(agent);
 
-			GameObject moveAIObject = Instantiate(MoveAIPrefab, spawnLine.position + randomOoffset * spawnLine.right, spawnLine.rotation) as GameObject;
-			moveAIObject.GetComponent<MoveAI>().SetAgent(agent);
-			moveAIObject.transform.parent = transform;
-			moveAIObject.name = "MoveAI Gen "+  agent.GetGenNumber();
+			SpawnWalkAI(agent);
 
 			agentsInTesting++;
 
 			UIDisplay.UpdateAgentsInTesting( 1 , agent.GetGenNumber(), agentsInTesting);
 		}
 
+	}
+
+	void SpawnMoveAI(Agent Agent)
+	{
+		float randomOoffset = Random.Range(-0.5f * spawnLine.transform.localScale.x, 0.5f * spawnLine.transform.localScale.x);
+
+		GameObject moveAIObject = Instantiate(MoveAIPrefab, spawnLine.position + randomOoffset * spawnLine.right, spawnLine.rotation) as GameObject;
+		moveAIObject.GetComponent<MoveAI>().SetAgent(Agent);
+		moveAIObject.transform.parent = transform;
+		moveAIObject.name = "MoveAI Gen " + Agent.GetGenNumber();
+	}
+
+	void SpawnWalkAI(Agent Agent)
+	{
+		float randomOoffset = Random.Range(-0.5f * spawnLine.transform.localScale.x, 0.5f * spawnLine.transform.localScale.x);
+
+		GameObject walkAIObject = Instantiate(WalkAIPrefab, spawnLine.position + randomOoffset * spawnLine.right + Vector3.up*10 , spawnLine.rotation) as GameObject;
+		walkAIObject.GetComponent<WalkAI>().SetAgent(Agent);
+		walkAIObject.transform.parent = transform;
+		walkAIObject.name = "WalkAI Gen " + Agent.GetGenNumber();
 	}
 
 
@@ -90,6 +110,8 @@ public class AIManager : Singleton<AIManager>
 
 		totalAgents++;
 		averageDistance = averageDistance + ((newDistance - averageDistance) / totalAgents);
+
+		UIDisplay.UpdateAverageDistance(averageDistance);
 
 
 		return newDistance;

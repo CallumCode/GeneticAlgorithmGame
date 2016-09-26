@@ -75,6 +75,7 @@
     <Compile Include="Assets\Custom Assets\Scripts\Boundary.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\DrawAIPath.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\EnhanceCharacterJoint.cs" />
+    <Compile Include="Assets\Custom Assets\Scripts\FreeCamera.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\MoveAI.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\PlayerRange.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Assets\Custom Assets\Scripts\TextShadow.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\UIAgentDisplay.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\UIDisplay.cs" />
+    <Compile Include="Assets\Custom Assets\Scripts\WalkAI.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\WalkController.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\WinLine.cs" />
   </ItemGroup>

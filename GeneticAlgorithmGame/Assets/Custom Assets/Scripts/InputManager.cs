@@ -24,7 +24,7 @@ public class InputManager : MonoBehaviour
 			{
 			//	Debug.Log(hit.collider.tag);
 
-				if(hit.collider.CompareTag("AgentMove") )
+				if(hit.collider.CompareTag("MoveAI") )
 				{
 					MoveAI moveAI  = hit.collider.GetComponent<MoveAI>();
 

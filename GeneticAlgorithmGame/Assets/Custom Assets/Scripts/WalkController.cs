@@ -25,7 +25,7 @@ public class WalkController : MonoBehaviour
 
 	public float amount = 1;
 
-	enum ForceIndex
+	public  enum ForceIndex
 	{
 		Right_BodyToArm = 0,
 		Right_ArmToWrist,
@@ -129,8 +129,9 @@ public class WalkController : MonoBehaviour
 		Debug.DrawLine(rigidBdy2.transform.position, rigidBdy2.transform.position + forceVector * 0.01f, colour, 1);
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	void DoForceTick(ArrayList forceList)
+	public void DoForceTick(ArrayList forceList)
 	{
 		if (forceList != null && (int)ForceIndex.count == forceList.Count)
 
@@ -150,6 +151,6 @@ public class WalkController : MonoBehaviour
 			DoForceMove(ArmRight, WristRight, (float)forceList[(int)ForceIndex.Right_ArmToWrist]);
 		}
 	}
-
+	
 
 }

@@ -20,14 +20,26 @@ public class Boundary : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-
-		MoveAI moveAI = other.gameObject.GetComponent<MoveAI>();
-
-		if (moveAI != null)
+		if (other.CompareTag("MoveAI"))
 		{
-			moveAI.KillSelf();
+			MoveAI moveAI = other.gameObject.GetComponent<MoveAI>();
+
+			if (moveAI != null)
+			{
+				moveAI.KillSelf();
+			}
 		}
 
+ 
+			if (other.CompareTag("WalkAI"))
+			{
+				WalkAI walkAI = other.gameObject.GetComponentInParent<WalkAI>();
+
+				if (walkAI != null)
+				{
+					walkAI.Failed();
+				}
+			}
 	}
 
 }
