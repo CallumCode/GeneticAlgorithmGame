@@ -118,15 +118,15 @@ public class WalkController : MonoBehaviour
 		Vector3 forceVector = rigidBdy1.transform.forward * force;
 		rigidBdy1.AddForce(forceVector);
 
-		Color colour = force > 0 ? Color.red : Color.blue;
-		Debug.DrawLine(rigidBdy1.transform.position, rigidBdy1.transform.position + forceVector * 0.01f, colour, 1);
+		//Color colour = force > 0 ? Color.red : Color.blue;
+	//	Debug.DrawLine(rigidBdy1.transform.position, rigidBdy1.transform.position + forceVector * 0.01f, colour, 1);
 
 		force *= -1;
 		forceVector = rigidBdy2.transform.forward * force;
 		rigidBdy2.AddForce(forceVector);
 
-		colour = force > 0 ? Color.red : Color.blue;
-		Debug.DrawLine(rigidBdy2.transform.position, rigidBdy2.transform.position + forceVector * 0.01f, colour, 1);
+	//	colour = force > 0 ? Color.red : Color.blue;
+	//	Debug.DrawLine(rigidBdy2.transform.position, rigidBdy2.transform.position + forceVector * 0.01f, colour, 1);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

@@ -14,21 +14,24 @@ public class AIManager : Singleton<AIManager>
 
 	public GameObject WalkAIPrefab;
 
-
 	public PopulationManager populationManager;
+
+	public SpawnerScaner spawnerScaner;
 
 	float spawnRate = 5.0f;
 	float lastSpawnTime = 0;
 
-	float breedRate = 0.05f;
+	float breedTime = 20.0f;
 	float lastBreedTime = 0;
 
 
 	 int agentsInTesting = 0;
 	int agentLimit = 1;
 
+	ArrayList pastDistances;
+
 	float averageDistance = 100000;
-	float totalAgents = 0;
+	//float totalAgents = 0;
 
 	protected AIManager() { }
 
@@ -36,14 +39,14 @@ public class AIManager : Singleton<AIManager>
 	// Use this for initialization
 	void Start()
 	{
-
+		pastDistances = new ArrayList();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 
-		if (Time.time > (lastBreedTime + 1.0f / breedRate))
+		if (Time.time > (lastBreedTime + breedTime))
 		{
 			lastBreedTime = Time.time;
 			populationManager.testPop.BreedAllTestedGen();
@@ -51,7 +54,7 @@ public class AIManager : Singleton<AIManager>
 
 		bool pastTime = Time.time > (lastSpawnTime + 1.0f / spawnRate);
 		bool lowerThanLimit = agentsInTesting < Mathf.Abs(agentLimit);
-		if (pastTime && lowerThanLimit)
+		if (pastTime && lowerThanLimit && !spawnerScaner.IsBlocked())
 		{
 			lastSpawnTime = Time.time;
 
@@ -82,9 +85,8 @@ public class AIManager : Singleton<AIManager>
 
 	void SpawnWalkAI(Agent Agent)
 	{
-		float randomOoffset = Random.Range(-0.5f * spawnLine.transform.localScale.x, 0.5f * spawnLine.transform.localScale.x);
 
-		GameObject walkAIObject = Instantiate(WalkAIPrefab, spawnLine.position + randomOoffset * spawnLine.right + Vector3.up*10 , spawnLine.rotation) as GameObject;
+		GameObject walkAIObject = Instantiate(WalkAIPrefab, spawnerScaner.GetPos() , spawnLine.rotation) as GameObject;
 		walkAIObject.GetComponent<WalkAI>().SetAgent(Agent);
 		walkAIObject.transform.parent = transform;
 		walkAIObject.name = "WalkAI Gen " + Agent.GetGenNumber();
@@ -104,16 +106,28 @@ public class AIManager : Singleton<AIManager>
 	public float UpdateAgentAvgDist(Vector3 position)
 	{
 		//average = average + ((value - average) / nbValues)
+		/*
+		float newDistance = WinLine.position.z - position.z;
+		if (newDistance < 0) newDistance = 0;
+
+		averageDistance = averageDistance + ((newDistance - averageDistance) / totalAgents);
+		*/
 
 		float newDistance = WinLine.position.z - position.z;
 		if (newDistance < 0) newDistance = 0;
 
-		totalAgents++;
-		averageDistance = averageDistance + ((newDistance - averageDistance) / totalAgents);
+
+		pastDistances.Add(newDistance);
+		pastDistances.Sort();
+
+		float count = pastDistances.Count;
+		int mid = (int)(count / 2.0);
+
+		averageDistance = (float) pastDistances[mid];
 
 		UIDisplay.UpdateAverageDistance(averageDistance);
 
-
+		
 		return newDistance;
 	}
 
@@ -126,5 +140,11 @@ public class AIManager : Singleton<AIManager>
 	public float GetAvgDist()
 	{
 		return averageDistance;
+	}
+
+	public void ResetAvgDist()
+	{
+		averageDistance = 0;
+		pastDistances.Clear();
 	}
 }

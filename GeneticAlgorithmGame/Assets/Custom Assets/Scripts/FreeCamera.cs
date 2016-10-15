@@ -15,27 +15,8 @@ public class FreeCamera : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-		{
-		//	shift = true;
-			flySpeed *= accelerationRatio;
-		}
+	
 
-		if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
-		{
-		//	shift = false;
-			flySpeed /= accelerationRatio;
-		}
-		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
-		{
-		//	ctrl = true;
-			flySpeed *= slowDownRatio;
-		}
-		if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
-		{
-		//	ctrl = false;
-			flySpeed /= slowDownRatio;
-		}
 		if (Input.GetAxis("Vertical") != 0)
 		{
 			transform.Translate(defaultCam.transform.forward * flySpeed * Input.GetAxis("Vertical"));

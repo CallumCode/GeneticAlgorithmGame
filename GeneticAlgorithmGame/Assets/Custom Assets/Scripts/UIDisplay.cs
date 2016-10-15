@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class UIDisplay : MonoBehaviour
 {
 
+	public GameObject GenTextArea;
 	public Text agentsInTesting;
 	Text numOFGensText;
 	public Population popToshow;
@@ -22,7 +23,7 @@ public class UIDisplay : MonoBehaviour
 	public Text AddTextToCanvas(string textString, GameObject canvasGameObject, float depth)
 	{
 
-		GameObject textObejct = Instantiate(TextPrefab, TextPrefab.transform.position, TextPrefab.transform.rotation) as GameObject;
+		GameObject textObejct = Instantiate(TextPrefab, GenTextArea.transform.position, TextPrefab.transform.rotation) as GameObject;
 
 
 

@@ -11,6 +11,24 @@ public class Agent
 	int generation;
 	Population population;
 
+	public Agent(Agent agentToCopy)
+	{
+
+		componentsList = new ArrayList();
+		for(int i = 0; i < numOfComponets; i++)
+		{
+			AgentComponent agentComponent = new AgentComponent( agentToCopy.GetComponet(i));
+
+			componentsList.Add(agentComponent);
+
+			population = agentToCopy.population;
+			generation = agentToCopy.generation;
+
+		}
+		
+
+	}
+
 
 	// Use this for initialization
 	public Agent(AgentData agentIN , Population populationIn)
@@ -81,6 +99,17 @@ public Agent(Population populationIn, int generationIn)
 	public int GetGenNumber()
 	{
 		return generation;
+	}
+
+
+	public void Mutate()
+	{
+
+		foreach (AgentComponent component in componentsList)
+		{
+			component.Mutate();
+
+		}
 	}
 }
 

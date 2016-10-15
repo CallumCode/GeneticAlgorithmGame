@@ -82,6 +82,7 @@
     <Compile Include="Assets\Custom Assets\Scripts\Population.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\PopulationManager.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\Singleton.cs" />
+    <Compile Include="Assets\Custom Assets\Scripts\SpawnerScaner.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\TextShadow.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\UIAgentDisplay.cs" />
     <Compile Include="Assets\Custom Assets\Scripts\UIDisplay.cs" />

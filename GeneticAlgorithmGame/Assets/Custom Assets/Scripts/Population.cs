@@ -38,6 +38,8 @@ public class Population : MonoBehaviour
 		////
 		ArrayList untestGenPool = (ArrayList)untestedPools[gen + 1];
 
+		agentA.Mutate();
+		agentA.Mutate();
 
 		agentA.IncrimentGen();
 		agentB.IncrimentGen();
@@ -233,22 +235,30 @@ public class Population : MonoBehaviour
 		for (int genIndex = 0; genIndex < numOfTestedGen; genIndex++)
 		{
 			ArrayList testedGen = (ArrayList)testedPools[genIndex];
+			ArrayList untestedGen = (ArrayList)untestedPools[genIndex];
 
 			while (testedGen.Count > 1)
 			{
-				Agent A = (Agent)testedGen[0];
-				Agent B = (Agent)testedGen[1];
+				Agent ParentA = (Agent)testedGen[0];
+				Agent ParentB = (Agent)testedGen[1];
 
-				testedGen.Remove(A);
-				testedGen.Remove(B);
+				Agent ChildA = new Agent(ParentA);
+				Agent ChildB = new Agent(ParentB);
 
-				Breed(ref A, ref B, genIndex);
+				testedGen.Remove(ParentA);
+				testedGen.Remove(ParentB);
+				untestedGen.Add(ParentA);
+				untestedGen.Add(ParentB);
+
+				Breed(ref ChildA, ref ChildB, genIndex); // dont need to be ref any more but will leave for now
 
 			}// end while ran out of tested agents
 
 
 		}// end loop of all tested gens
 
+		
+		AIManager.Instance.ResetAvgDist();
 	}
 
 
