@@ -17,6 +17,8 @@ public class WalkAI : MonoBehaviour
 
 	int walkCycles = 0;
 	int minWalkCycles = 5;
+
+	bool ending = false;
 	// Use this for initialization
 	void Start()
 	{
@@ -96,12 +98,20 @@ public class WalkAI : MonoBehaviour
 
 	public void Succeed(bool recordDist = true)
 	{
-		Agent.SurivedGen();
-		DestroySelf(recordDist);
+		if (ending == false)
+		{
+			ending = true;
+			Agent.SurivedGen();
+			DestroySelf(recordDist);
+		}
 	}
 
 	public void Failed(bool recordDist = true)
 	{
-		DestroySelf(recordDist);
+		if (ending == false)
+		{
+			ending = true;
+			DestroySelf(recordDist);
+		}
 	}
 }

@@ -13,7 +13,7 @@ public class AgentComponent
 
 
 	public ArrayList forceList;
-	static float forceRange = 70;
+	static float forceRange = 100;
 	int numOfForces = 10;
 
 	float muateRange = 0.5f;

@@ -31,7 +31,7 @@ public class Boundary : MonoBehaviour
 		}
 
 
-		if (other.CompareTag("WalkAI"))
+		if (other.CompareTag("WalkPart"))
 		{
 			WalkAI walkAI = other.gameObject.GetComponentInParent<WalkAI>();
 

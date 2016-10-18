@@ -6,7 +6,10 @@ public class SpawnerScaner : MonoBehaviour
 
 	public float moveSpeed = 0.1f;
 
-	bool blocked = false;
+	int counter;
+
+	public bool isEmpty = true ;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -16,9 +19,13 @@ public class SpawnerScaner : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		blocked = false;
 
 		transform.Translate(transform.right * moveSpeed);
+	}
+
+	void LateUpdate()
+	{
+
 	}
 
 
@@ -27,21 +34,28 @@ public class SpawnerScaner : MonoBehaviour
 		moveSpeed = Mathf.Abs(moveSpeed) * dir;
 	}
 
-	void OnTriggerStay(Collider other)
-	{
-		if (other.CompareTag("WalkAI"))
-		{
-			blocked = true;
-		}
-	}
+
 
 	public bool IsBlocked()
 	{
-		return blocked;
+		return  !isEmpty;
 	}
 
 	public Vector3 GetPos()
 	{
 		return transform.position;
 	}
+ 
+
+
+	void FixedUpdate()
+	{
+		isEmpty = true;
+	}
+
+	void OnTriggerStay(Collider other)
+	{
+		isEmpty = false;
+	}
+
 }
